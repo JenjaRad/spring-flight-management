@@ -1,6 +1,7 @@
 package com.eugene.flight.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
 
@@ -41,8 +42,14 @@ public non-sealed class Airplane extends DataAudit {
             mappedBy = "airplane",
             orphanRemoval = true
     )
+    @JsonManagedReference
     @ToString.Exclude
     private Set<Flight> flights = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "air_company_id")
+    @JsonBackReference
+    private AirCompany company;
 
     @Override
     public boolean equals(Object o) {
@@ -51,12 +58,6 @@ public non-sealed class Airplane extends DataAudit {
         Airplane airplane = (Airplane) o;
         return serialNumber.equals(airplane.serialNumber);
     }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "air_company_id")
-    @JsonBackReference
-    @ToString.Exclude
-    private AirCompany company;
 
     @Override
     public int hashCode() {

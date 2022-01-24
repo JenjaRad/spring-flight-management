@@ -1,9 +1,8 @@
 package com.eugene.flight.controller;
 
 import com.eugene.flight.domain.AirCompany;
-import com.eugene.flight.domain.Airplane;
+import com.eugene.flight.domain.request.CompanyAirplaneId;
 import com.eugene.flight.service.AirCompanyService;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,18 +15,25 @@ public class AirCompanyController {
 
     private AirCompanyService companyService;
 
-    protected static final String BASE_URL = "/api/v1/air-company";
+    protected static final String BASE_URL = "/api/v1/airplane-management";
 
     @Autowired
     public AirCompanyController(AirCompanyService companyService) {
         this.companyService = companyService;
     }
 
-    @PostMapping(value = "/company-management/reassign/{companyId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<AirCompany> assignAirplanesToAnotherCompany(@PathVariable Long companyId, @RequestBody ObjectNode node) {
-        return ResponseEntity.noContent()
-                .build();
+    @PostMapping(value = "/reassign", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AirCompany> assignAirplaneToAnotherCompany(@RequestBody CompanyAirplaneId companyAirplaneId) {
+        AirCompany company = companyService.reassignAirplaneToAnotherCompany(
+                companyAirplaneId.fromCompanyId(), companyAirplaneId.toCompanyId(), companyAirplaneId.airplaneId()
+        );
+        return new ResponseEntity<>(company, HttpStatus.CREATED);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AirCompany> getCompanyById(@PathVariable Long id) {
+        AirCompany currentCompany = companyService.findAirCompanyById(id);
+        return new ResponseEntity<>(currentCompany, HttpStatus.OK);
+    }
+
 }
-// /?param1=litak&param2=vertu&company=

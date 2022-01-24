@@ -34,3 +34,4 @@ build/
 /src/main/resources/application.properties
 /mvnw
 /mvnw.cmd
+/.mvn/

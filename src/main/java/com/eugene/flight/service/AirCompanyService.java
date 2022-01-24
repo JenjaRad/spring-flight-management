@@ -72,9 +72,7 @@ public class AirCompanyService {
         AirCompany destCompany = null;
         for (Airplane airplane : removedAirplane) {
             destCompany = companyRepository.getById(toCompanyId);
-            destCompany.getAirplanes()
-                    .add(airplane);
-            airplane.setCompany(destCompany);
+            destCompany.addAirplane(airplane);
             airplaneRepository.save(airplane);
         }
         Objects.requireNonNull(destCompany);

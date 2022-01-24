@@ -1,5 +1,6 @@
 package com.eugene.flight.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
@@ -23,10 +24,12 @@ public non-sealed class Flight extends DataAudit {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "air_company_id")
+    @JsonBackReference
     private AirCompany airCompany;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "airplane_id")
+    @JsonBackReference
     private Airplane airplane;
 
     private String departureCountry;

@@ -1,5 +1,6 @@
 package com.eugene.flight.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -15,6 +16,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @ToString
 public class AirCompany {
     @Id
@@ -35,6 +37,8 @@ public class AirCompany {
             mappedBy = "airCompany",
             orphanRemoval = true
     )
+    @JsonManagedReference
+    @ToString.Exclude
     private Set<Flight> flights = new HashSet<>();
 
     @OneToMany(
@@ -44,6 +48,7 @@ public class AirCompany {
             orphanRemoval = true
     )
     @JsonManagedReference
+    @ToString.Exclude
     private List<Airplane> airplanes = new ArrayList<>();
 
     public void addFlight(Flight flight) {
