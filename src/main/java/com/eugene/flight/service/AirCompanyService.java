@@ -1,7 +1,6 @@
 package com.eugene.flight.service;
 
 import com.eugene.flight.dao.AirCompanyRepository;
-import com.eugene.flight.dao.AirplaneRepository;
 import com.eugene.flight.domain.AirCompany;
 import com.eugene.flight.domain.Airplane;
 import com.eugene.flight.exception.AirCompanyNotFoundException;
@@ -18,12 +17,10 @@ public class AirCompanyService {
 
     private AirCompanyRepository companyRepository;
 
-    private AirplaneRepository airplaneRepository;
 
     @Autowired
-    public AirCompanyService(AirCompanyRepository companyRepository, AirplaneRepository airplaneRepository) {
+    public AirCompanyService(AirCompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
-        this.airplaneRepository = airplaneRepository;
     }
 
     public AirCompany createCompany(AirCompany company) {
@@ -69,7 +66,7 @@ public class AirCompanyService {
 
         AirCompany destCompany = companyRepository.getById(toCompanyId);
         destCompany.addAirplane(airplaneToSwitch);
-        airplaneRepository.save(airplaneToSwitch);
+        companyRepository.save(destCompany);
         return destCompany;
     }
 }
