@@ -26,4 +26,8 @@ public class FlightService {
         }
         return Collections.emptyList();
     }
+
+    public List<Flight> findAllActiveFlights() {
+        return flightRepository.findAllByStatusActiveAndCreatedDateGreaterThan24Hours();
+    }
 }
