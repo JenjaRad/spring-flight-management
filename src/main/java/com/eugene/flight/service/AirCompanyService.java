@@ -66,7 +66,6 @@ public class AirCompanyService {
 
         AirCompany destCompany = companyRepository.getById(toCompanyId);
         destCompany.addAirplane(airplaneToSwitch);
-        companyRepository.save(destCompany);
         return destCompany;
     }
 }

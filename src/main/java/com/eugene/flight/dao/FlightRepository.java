@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface FlightRepository extends JpaRepository<Flight, Long> {
 
-    List<Flight> findAllByStatusAndAirCompanyName(FlightStatus status, String name);
+    List<Flight> findAllByStatusAndAirCompanyName(FlightStatus status, String companyName);
+
 }
