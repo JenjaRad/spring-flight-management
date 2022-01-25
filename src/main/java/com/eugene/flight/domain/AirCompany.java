@@ -1,5 +1,6 @@
 package com.eugene.flight.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
@@ -37,7 +38,7 @@ public class AirCompany {
             mappedBy = "airCompany",
             orphanRemoval = true
     )
-    @JsonManagedReference
+    @JsonIgnore
     @ToString.Exclude
     private Set<Flight> flights = new HashSet<>();
 

@@ -54,7 +54,6 @@ public class AirCompanyService {
 
     @Transactional
     public AirCompany reassignAirplaneToAnotherCompany(Long fromCompanyId, Long toCompanyId, Long airplaneId) {
-        var removedAirplane = new ArrayList<Airplane>();
         AirCompany currentCompany = companyRepository.getById(fromCompanyId);
         List<Airplane> airplanes = currentCompany.getAirplanes();
 
@@ -66,16 +65,11 @@ public class AirCompanyService {
                         String.format("Airplane by this ID: %d was not found or this airplane belongs to other company", airplaneId)
                 ));
 
-        removedAirplane.add(airplaneToSwitch);
-
         currentCompany.removeAirplane(airplaneToSwitch);
-        AirCompany destCompany = null;
-        for (Airplane airplane : removedAirplane) {
-            destCompany = companyRepository.getById(toCompanyId);
-            destCompany.addAirplane(airplane);
-            airplaneRepository.save(airplane);
-        }
-        Objects.requireNonNull(destCompany);
+
+        AirCompany destCompany = companyRepository.getById(toCompanyId);
+        destCompany.addAirplane(airplaneToSwitch);
+        airplaneRepository.save(airplaneToSwitch);
         return destCompany;
     }
 }

@@ -38,14 +38,14 @@ public non-sealed class Flight extends DataAudit {
 
     private int distance;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd 'at' HH:mm", locale = "uk_UA")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC", locale = "uk_UA")
     private Instant estimatedDateType;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd 'at' HH:mm", locale = "uk_UA")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC", locale = "uk_UA")
     @Column(name = "ended_at")
     private Instant endedAt;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd 'on' HH:mm", locale = "uk_UA")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC", locale = "uk_UA")
     @Column(name = "delay_at")
     private Instant delayAt;
 }
