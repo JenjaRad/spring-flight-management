@@ -1,7 +1,6 @@
 package com.eugene.flight.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -17,7 +16,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @ToString
 public class AirCompany {
     @Id
@@ -39,7 +37,7 @@ public class AirCompany {
             orphanRemoval = true
     )
     @JsonIgnore
-    @ToString.Exclude
+    //@ToString.Exclude
     private Set<Flight> flights = new HashSet<>();
 
     @OneToMany(

@@ -43,12 +43,13 @@ public non-sealed class Airplane extends DataAudit {
             orphanRemoval = true
     )
     @JsonManagedReference
-    @ToString.Exclude
+    //@ToString.Exclude
     private Set<Flight> flights = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "air_company_id")
+    @JoinColumn(name = "air_company_id", nullable = false)
     @JsonBackReference
+    @ToString.Exclude
     private AirCompany company;
 
     @Override

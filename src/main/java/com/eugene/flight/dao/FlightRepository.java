@@ -15,4 +15,5 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
 
     @Query(value = "select * from flight_schema.flight where status like 'ACTIVE' and created_at < now() - INTERVAL '1 DAY'", nativeQuery = true)
     List<Flight> findAllByStatusActiveAndCreatedDateGreaterThan24Hours();
+
 }

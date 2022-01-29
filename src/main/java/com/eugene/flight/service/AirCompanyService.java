@@ -29,7 +29,7 @@ public class AirCompanyService {
     }
 
     public AirCompany findAirCompanyById(Long id) {
-        return Optional.of(companyRepository.getById(id))
+        return companyRepository.findById(id)
                 .orElseThrow(() -> new AirCompanyNotFoundException("Air Company ID cannot be null" + id));
     }
 
@@ -51,7 +51,8 @@ public class AirCompanyService {
 
     @Transactional
     public AirCompany reassignAirplaneToAnotherCompany(Long fromCompanyId, Long toCompanyId, Long airplaneId) {
-        AirCompany currentCompany = companyRepository.getById(fromCompanyId);
+        AirCompany currentCompany = companyRepository.findById(fromCompanyId)
+                .orElseThrow(AirCompanyNotFoundException::new);
         List<Airplane> airplanes = currentCompany.getAirplanes();
 
         Airplane airplaneToSwitch = airplanes.stream()

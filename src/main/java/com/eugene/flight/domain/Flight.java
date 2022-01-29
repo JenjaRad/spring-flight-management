@@ -13,6 +13,7 @@ import java.time.Instant;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public non-sealed class Flight extends DataAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "flight_sequence")
@@ -23,13 +24,15 @@ public non-sealed class Flight extends DataAudit {
     private FlightStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "air_company_id")
+    @JoinColumn(name = "air_company_id", nullable = false)
     @JsonBackReference
+    //@ToString.Exclude
     private AirCompany airCompany;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "airplane_id")
+    @JoinColumn(name = "airplane_id", nullable = false)
     @JsonBackReference
+    //@ToString.Exclude
     private Airplane airplane;
 
     private String departureCountry;
