@@ -37,7 +37,7 @@ public class AirCompany {
             orphanRemoval = true
     )
     @JsonIgnore
-    //@ToString.Exclude
+    @ToString.Exclude
     private Set<Flight> flights = new HashSet<>();
 
     @OneToMany(

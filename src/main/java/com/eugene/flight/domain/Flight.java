@@ -26,13 +26,13 @@ public non-sealed class Flight extends DataAudit {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "air_company_id", nullable = false)
     @JsonBackReference
-    //@ToString.Exclude
+    @ToString.Exclude
     private AirCompany airCompany;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "airplane_id", nullable = false)
     @JsonBackReference
-    //@ToString.Exclude
+    @ToString.Exclude
     private Airplane airplane;
 
     private String departureCountry;

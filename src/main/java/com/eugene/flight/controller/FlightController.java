@@ -38,6 +38,12 @@ public class FlightController {
         return ResponseEntity.ok(allActiveFlights);
     }
 
+    @GetMapping(value = "/flights/completed")
+    public ResponseEntity<List<Flight>> getAllCompletedFlightsWithDateDiff() {
+        List<Flight> flights = flightService.findAllByStatusCompletedAndDate();
+        return ResponseEntity.ok(flights);
+    }
+
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Flight> updateFlightInfoByStatus(@RequestParam Long flightId, @RequestBody FlightRequest updatingFlight) {
         Flight savedFlight = flightService.updateFlightStatus(flightId, updatingFlight);
