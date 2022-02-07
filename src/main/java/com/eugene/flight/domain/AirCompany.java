@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -17,10 +18,11 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class AirCompany {
+@Builder
+public class AirCompany implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "air_company_sequence")
-    @SequenceGenerator(name = "air_company_sequence", allocationSize = 1, schema = "flight_schema")
+    @SequenceGenerator(name = "air_company_sequence", sequenceName = "AIR_COMPANY_SEQUENCE", allocationSize = 1, schema = "flight_schema")
     private Long id;
 
     private String name;

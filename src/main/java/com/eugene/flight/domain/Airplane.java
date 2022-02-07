@@ -20,7 +20,7 @@ import java.util.Set;
 public non-sealed class Airplane extends DataAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "airplane_sequence")
-    @SequenceGenerator(name = "airplane_sequence", allocationSize = 1, schema = "flight_schema")
+    @SequenceGenerator(name = "airplane_sequence", sequenceName = "AIRPLANE_SEQUENCE", allocationSize = 1, schema = "flight_schema")
     private Long id;
 
     private String name;
@@ -43,7 +43,7 @@ public non-sealed class Airplane extends DataAudit {
             orphanRemoval = true
     )
     @JsonManagedReference
-    //@ToString.Exclude
+    @ToString.Exclude
     private Set<Flight> flights = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

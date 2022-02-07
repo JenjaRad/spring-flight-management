@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS flight_schema;
 
-CREATE TABLE flight_schema.air_company
+CREATE TABLE IF NOT EXISTS flight_schema.air_company
 (
     id           BIGINT NOT NULL,
     name         VARCHAR(255),
@@ -9,7 +9,7 @@ CREATE TABLE flight_schema.air_company
     CONSTRAINT pk_air_company PRIMARY KEY (id)
 );
 
-CREATE TABLE flight_schema.airplane
+CREATE TABLE IF NOT EXISTS flight_schema.airplane
 (
     id                BIGINT                      NOT NULL,
     created_at        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE flight_schema.airplane
     CONSTRAINT pk_airplane PRIMARY KEY (id)
 );
 
-CREATE TABLE flight_schema.flight
+CREATE TABLE IF NOT EXISTS flight_schema.flight
 (
     id                  BIGINT                      NOT NULL,
     created_at          TIMESTAMP WITHOUT TIME ZONE NOT NULL,
@@ -44,3 +44,11 @@ ALTER TABLE flight_schema.flight
 ALTER TABLE flight_schema.flight
     ADD CONSTRAINT FK_AIR_COMPANY FOREIGN KEY (air_company_id) REFERENCES flight_schema.air_company (id);
 
+ALTER TABLE flight_schema.airplane
+ADD COLUMN air_company_id BIGINT;
+
+ALTER TABLE flight_schema.airplane ADD
+    FOREIGN KEY (air_company_id) REFERENCES flight_schema.air_company (id);
+
+ALTER TABLE flight_schema.airplane
+    ALTER column serial_number TYPE VARCHAR(60);

@@ -17,7 +17,7 @@ import java.time.Instant;
 public non-sealed class Flight extends DataAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "flight_sequence")
-    @SequenceGenerator(name = "flight_sequence", allocationSize = 1, schema = "flight_schema")
+    @SequenceGenerator(name = "flight_sequence", sequenceName = "FLIGHT_SEQUENCE", allocationSize = 1, schema = "flight_schema")
     private Long id;
 
     @Enumerated(EnumType.STRING)

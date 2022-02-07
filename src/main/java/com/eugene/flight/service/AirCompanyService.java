@@ -34,11 +34,11 @@ public class AirCompanyService {
     }
 
     @Transactional
-    public AirCompany updateAirCompanyByName(Long companyId, String name) {
+    public void updateAirCompanyByName(Long companyId, String name) {
         if (companyId == null || !StringUtils.hasText(name)) {
             throw new AirCompanyNotFoundException("Cannot update company by name");
         }
-        return companyRepository.updateCompanyByName(companyId, name);
+        companyRepository.updateCompanyByName(companyId, name);
     }
 
     @Transactional
