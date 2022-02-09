@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,6 +33,15 @@ class AirCompanyRepositoryTest {
     void testUpdateCompanyByName() {
         companyRepository.updateCompanyByName(1L, "Boeing");
         AirCompany updatedCompany = companyRepository.getById(1L);
+        companyRepository.saveAndFlush(updatedCompany);
         assertThat(updatedCompany.getName()).isEqualTo("Boeing");
+    }
+
+    @Test
+    @Order(3)
+    void testFindAll() {
+        List<AirCompany> companies = companyRepository.findAll();
+        assertThat(companies).isNotNull();
+        assertThat(companies.size()).isPositive();
     }
 }
