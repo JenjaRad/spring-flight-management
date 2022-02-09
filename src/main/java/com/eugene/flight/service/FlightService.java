@@ -14,7 +14,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FlightService {
@@ -38,9 +37,7 @@ public class FlightService {
     }
 
     public Flight createFlight(Flight flight) {
-        Flight savedFlight = Optional.of(flightRepository.save(flight))
-                .orElseThrow(IllegalArgumentException::new);
-
+        Flight savedFlight = flightRepository.save(flight);
         if (!savedFlight.getStatus()
                 .equals(FlightStatus.PENDING)) {
             savedFlight.setStatus(FlightStatus.PENDING);
