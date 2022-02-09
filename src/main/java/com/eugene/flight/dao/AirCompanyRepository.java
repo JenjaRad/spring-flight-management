@@ -14,5 +14,4 @@ public interface AirCompanyRepository extends JpaRepository<AirCompany, Long> {
     @Query("UPDATE AirCompany c set c.name = :name where c.id = :id")
     @Modifying
     void updateCompanyByName(Long id, String name);
-
 }
