@@ -2,8 +2,8 @@ package com.eugene.flight.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -15,6 +15,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@SuperBuilder
 public non-sealed class Flight extends DataAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "flight_sequence")

@@ -1,8 +1,11 @@
 package com.eugene.flight.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -16,6 +19,8 @@ import java.time.Instant;
 @EntityListeners(value = AuditingEntityListener.class)
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@SuperBuilder
 public abstract sealed class DataAudit implements Serializable permits Airplane, Flight {
 
     @CreatedDate
