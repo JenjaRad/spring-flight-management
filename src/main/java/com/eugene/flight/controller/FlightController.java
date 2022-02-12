@@ -55,25 +55,25 @@ public class FlightController {
     }
 
     @PostMapping
-    public ResponseEntity<Flight> createFlight(@RequestBody Flight request) {
-//        Flight convertedFlight = convertToEntity(request);
-        Flight createdFlight = flightService.createFlight(request);
+    public ResponseEntity<Flight> createFlight(@RequestBody FlightRequest request) {
+        Flight convertedFlight = convertToEntity(request);
+        Flight createdFlight = flightService.createFlight(convertedFlight);
         return new ResponseEntity<>(createdFlight, HttpStatus.CREATED);
     }
 
-//    private Flight convertToEntity(FlightRequest request) {
-//        Flight dest = mapper.map(request, Flight.class);
-//        if (request.id() != null) {
-//            dest.setId(request.id());
-//            dest.setStatus(request.status());
-//            dest.getAirCompany()
-//                    .setName(request.companyName());
-//            dest.setCreatedAt(request.createdAt());
-//            dest.setEndedAt(request.endedAt());
-//            dest.setDelayAt(request.delayAt());
-//            dest.setDistance(request.distance());
-//            dest.setDepartureCountry(request.departureCountry());
-//        }
-//        return dest;
-//    }
+    private Flight convertToEntity(FlightRequest request) {
+        Flight dest = mapper.map(request, Flight.class);
+        if (request.id() != null) {
+            dest.setId(request.id());
+            dest.setStatus(request.status());
+            dest.setAirCompany(request.company());
+            dest.setAirplane(request.airplane());
+            dest.setCreatedAt(request.createdAt());
+            dest.setEndedAt(request.endedAt());
+            dest.setDelayAt(request.delayAt());
+            dest.setDistance(request.distance());
+            dest.setDepartureCountry(request.departureCountry());
+        }
+        return dest;
+    }
 }
