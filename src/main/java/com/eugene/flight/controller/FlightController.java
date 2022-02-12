@@ -3,7 +3,7 @@ package com.eugene.flight.controller;
 import com.eugene.flight.domain.Flight;
 import com.eugene.flight.domain.request.FlightRequest;
 import com.eugene.flight.service.FlightService;
-import com.eugene.flight.util.FlightMapper;
+import com.eugene.flight.factory.FlightMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
