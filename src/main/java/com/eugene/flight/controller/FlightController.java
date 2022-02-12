@@ -3,7 +3,7 @@ package com.eugene.flight.controller;
 import com.eugene.flight.domain.Flight;
 import com.eugene.flight.domain.request.FlightRequest;
 import com.eugene.flight.service.FlightService;
-import org.modelmapper.ModelMapper;
+import com.eugene.flight.util.FlightMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,12 +22,9 @@ public class FlightController {
 
     private FlightService flightService;
 
-    private ModelMapper mapper;
-
     @Autowired
-    public FlightController(FlightService flightService, ModelMapper mapper) {
+    public FlightController(FlightService flightService) {
         this.flightService = flightService;
-        this.mapper = mapper;
     }
 
     @GetMapping(value = "/flights/status", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -56,24 +53,8 @@ public class FlightController {
 
     @PostMapping
     public ResponseEntity<Flight> createFlight(@RequestBody FlightRequest request) {
-        Flight convertedFlight = convertToEntity(request);
+        Flight convertedFlight = FlightMapper.convertToEntity(request);
         Flight createdFlight = flightService.createFlight(convertedFlight);
         return new ResponseEntity<>(createdFlight, HttpStatus.CREATED);
-    }
-
-    private Flight convertToEntity(FlightRequest request) {
-        Flight dest = mapper.map(request, Flight.class);
-        if (request.id() != null) {
-            dest.setId(request.id());
-            dest.setStatus(request.status());
-            dest.setAirCompany(request.company());
-            dest.setAirplane(request.airplane());
-            dest.setCreatedAt(request.createdAt());
-            dest.setEndedAt(request.endedAt());
-            dest.setDelayAt(request.delayAt());
-            dest.setDistance(request.distance());
-            dest.setDepartureCountry(request.departureCountry());
-        }
-        return dest;
     }
 }
