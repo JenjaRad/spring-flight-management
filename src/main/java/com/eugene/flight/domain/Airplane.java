@@ -1,7 +1,9 @@
 package com.eugene.flight.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
 
@@ -42,12 +44,12 @@ public non-sealed class Airplane extends DataAudit {
             mappedBy = "airplane",
             orphanRemoval = true
     )
-    @JsonManagedReference
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @ToString.Exclude
     private Set<Flight> flights = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "air_company_id", nullable = false)
+    @JoinColumn(name = "air_company_id")
     @JsonBackReference
     @ToString.Exclude
     private AirCompany company;

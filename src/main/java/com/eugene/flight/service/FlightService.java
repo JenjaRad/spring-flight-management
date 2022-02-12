@@ -37,13 +37,11 @@ public class FlightService {
     }
 
     public Flight createFlight(Flight flight) {
-        Flight savedFlight = flightRepository.save(flight);
-        if (!savedFlight.getStatus()
+        if (!flight.getStatus()
                 .equals(FlightStatus.PENDING)) {
-            savedFlight.setStatus(FlightStatus.PENDING);
+            flight.setStatus(FlightStatus.PENDING);
         }
-
-        return savedFlight;
+        return flightRepository.save(flight);
     }
 
     public List<Flight> findAllByStatusCompletedAndDate() {

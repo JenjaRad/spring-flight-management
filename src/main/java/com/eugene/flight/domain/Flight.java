@@ -2,6 +2,7 @@ package com.eugene.flight.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,13 +26,13 @@ public non-sealed class Flight extends DataAudit {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "air_company_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "air-company-ref")
     @ToString.Exclude
     private AirCompany airCompany;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "airplane_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "airplane-ref")
     @ToString.Exclude
     private Airplane airplane;
 

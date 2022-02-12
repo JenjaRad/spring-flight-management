@@ -48,32 +48,32 @@ public class FlightController {
         return ResponseEntity.ok(flights);
     }
 
-    @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Flight> updateFlightInfoByStatus(@RequestParam Long flightId, @RequestBody FlightRequest updatingFlight) {
+    @PutMapping(value = "/edit/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Flight> updateFlightInfoByStatus(@PathVariable(name = "id") Long flightId, @RequestBody FlightRequest updatingFlight) {
         Flight savedFlight = flightService.updateFlightStatus(flightId, updatingFlight);
         return new ResponseEntity<>(savedFlight, HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/create")
-    public ResponseEntity<Flight> createFlight(@RequestBody FlightRequest request) {
-        Flight convertedFlight = convertToEntity(request);
-        Flight createdFlight = flightService.createFlight(convertedFlight);
+    @PostMapping
+    public ResponseEntity<Flight> createFlight(@RequestBody Flight request) {
+//        Flight convertedFlight = convertToEntity(request);
+        Flight createdFlight = flightService.createFlight(request);
         return new ResponseEntity<>(createdFlight, HttpStatus.CREATED);
     }
 
-    private Flight convertToEntity(FlightRequest request) {
-        Flight dest = mapper.map(request, Flight.class);
-        if (request.id() != null) {
-            dest.setId(request.id());
-            dest.setStatus(request.status());
-            dest.getAirCompany()
-                    .setName(request.companyName());
-            dest.setCreatedAt(request.createdAt());
-            dest.setEndedAt(request.endedAt());
-            dest.setDelayAt(request.delayAt());
-            dest.setDistance(request.distance());
-            dest.setDepartureCountry(request.departureCountry());
-        }
-        return dest;
-    }
+//    private Flight convertToEntity(FlightRequest request) {
+//        Flight dest = mapper.map(request, Flight.class);
+//        if (request.id() != null) {
+//            dest.setId(request.id());
+//            dest.setStatus(request.status());
+//            dest.getAirCompany()
+//                    .setName(request.companyName());
+//            dest.setCreatedAt(request.createdAt());
+//            dest.setEndedAt(request.endedAt());
+//            dest.setDelayAt(request.delayAt());
+//            dest.setDistance(request.distance());
+//            dest.setDepartureCountry(request.departureCountry());
+//        }
+//        return dest;
+//    }
 }

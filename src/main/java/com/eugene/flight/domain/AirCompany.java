@@ -1,7 +1,6 @@
 package com.eugene.flight.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 
 import javax.persistence.*;
@@ -48,7 +47,7 @@ public class AirCompany implements Serializable {
             mappedBy = "company",
             orphanRemoval = true
     )
-    @JsonManagedReference
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @ToString.Exclude
     private List<Airplane> airplanes = new ArrayList<>();
 
