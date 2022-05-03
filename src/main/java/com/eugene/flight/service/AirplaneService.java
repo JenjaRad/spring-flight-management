@@ -2,23 +2,32 @@ package com.eugene.flight.service;
 
 import com.eugene.flight.dao.AirplaneRepository;
 import com.eugene.flight.domain.Airplane;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.eugene.flight.exception.AirplaneNotFoundException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@Log4j2
 public class AirplaneService {
 
-    private AirplaneRepository airplaneRepository;
+    private final AirplaneRepository airplaneRepository;
 
-    @Autowired
-    public AirplaneService(AirplaneRepository airplaneRepository) {
-        this.airplaneRepository = airplaneRepository;
+    @Transactional
+    public Airplane createAirplane(Airplane airplane) {
+        return airplaneRepository.save(airplane);
     }
 
-    public Airplane createAirplane(Airplane airplane) {
-        return Optional.of(airplaneRepository.save(airplane))
-                .orElseThrow(IllegalArgumentException::new);
+    public Airplane findById(Long id) {
+        return airplaneRepository.findById(id)
+                .orElseThrow(AirplaneNotFoundException::new);
+    }
+
+    public List<Airplane> findAll() {
+        return airplaneRepository.findAll();
     }
 }

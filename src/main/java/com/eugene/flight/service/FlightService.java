@@ -5,7 +5,8 @@ import com.eugene.flight.domain.Flight;
 import com.eugene.flight.domain.FlightStatus;
 import com.eugene.flight.domain.request.FlightRequest;
 import com.eugene.flight.exception.FlightNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -16,14 +17,11 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@Log4j2
 public class FlightService {
 
-    private FlightRepository flightRepository;
-
-    @Autowired
-    public FlightService(FlightRepository flightRepository) {
-        this.flightRepository = flightRepository;
-    }
+    private final FlightRepository flightRepository;
 
     public List<Flight> getAllFlightsByStatusAndAirCompanyName(FlightStatus status, String name) {
         if (status != null && StringUtils.hasText(name)) {

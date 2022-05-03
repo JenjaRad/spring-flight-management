@@ -5,32 +5,34 @@ import com.eugene.flight.domain.AirCompany;
 import com.eugene.flight.domain.Airplane;
 import com.eugene.flight.exception.AirCompanyNotFoundException;
 import com.eugene.flight.exception.AirplaneNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
+@Log4j2
 public class AirCompanyService {
 
-    private AirCompanyRepository companyRepository;
+    private final AirCompanyRepository companyRepository;
 
-
-    @Autowired
-    public AirCompanyService(AirCompanyRepository companyRepository) {
-        this.companyRepository = companyRepository;
+    @Transactional
+    public AirCompany createCompany(AirCompany company) {
+        return companyRepository.save(company);
     }
 
-    public AirCompany createCompany(AirCompany company) {
-        return Optional.of(companyRepository.save(company))
-                .orElseThrow(() -> new AirCompanyNotFoundException("Air Company cannot be null" + company));
+    public List<AirCompany> findAll() {
+        return companyRepository.findAll();
     }
 
     public AirCompany findAirCompanyById(Long id) {
         return companyRepository.findById(id)
-                .orElseThrow(() -> new AirCompanyNotFoundException("Air Company ID cannot be null" + id));
+                .orElseThrow(() -> new AirCompanyNotFoundException("This Air Company ID doesn't exist - " + id));
     }
 
     @Transactional
@@ -49,7 +51,7 @@ public class AirCompanyService {
         companyRepository.deleteById(id);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public AirCompany reassignAirplaneToAnotherCompany(Long fromCompanyId, Long toCompanyId, Long airplaneId) {
         AirCompany currentCompany = companyRepository.findById(fromCompanyId)
                 .orElseThrow(AirCompanyNotFoundException::new);
@@ -59,14 +61,28 @@ public class AirCompanyService {
                 .filter(currentAirplane -> currentAirplane.getId()
                         .equals(airplaneId))
                 .findFirst()
-                .orElseThrow(() -> new AirplaneNotFoundException(
-                        String.format("Airplane by this ID: %d was not found or this airplane belongs to other company", airplaneId)
-                ));
+                .orElseThrow(() -> {
+                            log.error("Cannot find airplane by this ID: {} ", airplaneId);
+                            throw new AirplaneNotFoundException(
+                                    String.format("Airplane by this ID: %d was not found or this airplane belongs to other company", airplaneId));
+                        }
+                );
 
         currentCompany.removeAirplane(airplaneToSwitch);
 
-        AirCompany destCompany = companyRepository.getById(toCompanyId);
-        destCompany.addAirplane(airplaneToSwitch);
+        AirCompany destCompany = companyRepository.findById(toCompanyId)
+                .orElseGet(() -> {
+                    var targetCompany = new AirCompany();
+                    targetCompany.setId(toCompanyId);
+                    targetCompany.addAirplane(airplaneToSwitch);
+                    return companyRepository.saveAndFlush(targetCompany);
+                });
+        if (!destCompany.getAirplanes()
+                .contains(airplaneToSwitch)) {
+            destCompany.addAirplane(airplaneToSwitch);
+            log.info("Successfully add an airplane to existed company: {} ", destCompany.getId());
+        }
+        log.info("Successfully add an airplane to newly created company: {} ", destCompany.getId());
         return destCompany;
     }
 }

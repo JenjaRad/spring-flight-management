@@ -1,40 +1,61 @@
 package com.eugene.flight.controller;
 
-import com.eugene.flight.domain.AirCompany;
+import com.eugene.flight.domain.request.AirCompanyRequest;
 import com.eugene.flight.domain.request.CompanyAirplaneIdRequest;
+import com.eugene.flight.domain.resource.AirCompanyResource;
 import com.eugene.flight.service.AirCompanyService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 import static com.eugene.flight.controller.AirCompanyController.*;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
-@RequestMapping(value = BASE_URL)
+@RequestMapping(value = BASE_URL, produces = "application/hal+json")
 public class AirCompanyController {
 
     protected static final String BASE_URL = "/api/v1/air-company-management";
 
     private AirCompanyService companyService;
 
-    @Autowired
-    public AirCompanyController(AirCompanyService companyService) {
+    private AirCompanyResource airCompanyResource;
+
+    public AirCompanyController(AirCompanyService companyService, AirCompanyResource airCompanyResource) {
         this.companyService = companyService;
+        this.airCompanyResource = airCompanyResource;
     }
 
-    @PostMapping(value = "/reassign", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AirCompany> assignAirplaneToAnotherCompany(@RequestBody CompanyAirplaneIdRequest companyAirplaneIdRequest) {
-        AirCompany company = companyService.reassignAirplaneToAnotherCompany(
-                companyAirplaneIdRequest.fromCompanyId(), companyAirplaneIdRequest.toCompanyId(), companyAirplaneIdRequest.airplaneId()
-        );
-        return new ResponseEntity<>(company, HttpStatus.CREATED);
+    @PostMapping(value = "/reassign")
+    public ResponseEntity<AirCompanyRequest> assignAirplaneToAnotherCompany(@RequestBody CompanyAirplaneIdRequest companyAirplaneIdRequest) {
+        return Optional.ofNullable(companyService.reassignAirplaneToAnotherCompany(
+                companyAirplaneIdRequest.fromCompanyId(), companyAirplaneIdRequest.toCompanyId(), companyAirplaneIdRequest.airplaneId()))
+                .map(airCompany -> {
+                    AirCompanyRequest companyRequest = airCompanyResource.toModel(airCompany);
+                    companyRequest.add(linkTo(methodOn(AirplaneController.class).getAllAirplanes()).withRel("airplanes"));
+                    return ResponseEntity.ok(companyRequest);
+                })
+                .orElse(ResponseEntity.badRequest()
+                        .build());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AirCompany> getCompanyById(@PathVariable Long id) {
-        AirCompany currentCompany = companyService.findAirCompanyById(id);
-        return ResponseEntity.ok(currentCompany);
+    public ResponseEntity<AirCompanyRequest> getCompanyById(@PathVariable Long id) {
+        return Optional.ofNullable(companyService.findAirCompanyById(id))
+                .map(company -> {
+                    AirCompanyRequest airCompanyRequest = airCompanyResource.toModel(company);
+                    airCompanyRequest.add(linkTo(methodOn(AirCompanyController.class).getAllCompanies()).withSelfRel());
+                    return ResponseEntity.ok(airCompanyRequest);
+                })
+                .orElse(ResponseEntity.notFound()
+                        .build());
+
+    }
+
+    @GetMapping("/companies")
+    public ResponseEntity<CollectionModel<AirCompanyRequest>> getAllCompanies() {
+        return ResponseEntity.ok(airCompanyResource.toCollectionModel(companyService.findAll()));
     }
 }

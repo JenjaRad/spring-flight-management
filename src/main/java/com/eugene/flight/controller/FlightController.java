@@ -4,7 +4,6 @@ import com.eugene.flight.domain.Flight;
 import com.eugene.flight.domain.request.FlightRequest;
 import com.eugene.flight.service.FlightService;
 import com.eugene.flight.factory.FlightMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +14,13 @@ import java.util.List;
 import static com.eugene.flight.controller.FlightController.*;
 
 @RestController
-@RequestMapping(BASE_URL)
+@RequestMapping(value = BASE_URL, produces = "application/hal+json")
 public class FlightController {
 
     protected static final String BASE_URL = "/api/v1/flight-management";
 
-    private FlightService flightService;
+    private final FlightService flightService;
 
-    @Autowired
     public FlightController(FlightService flightService) {
         this.flightService = flightService;
     }
