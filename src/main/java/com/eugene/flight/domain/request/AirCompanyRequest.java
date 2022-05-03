@@ -8,7 +8,7 @@ import org.springframework.hateoas.server.core.Relation;
 
 @Getter
 @Builder
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @Relation(itemRelation = "airCompany", collectionRelation = "airCompanies")
 public class AirCompanyRequest extends RepresentationModel<AirCompanyRequest> {
     private Long id;
