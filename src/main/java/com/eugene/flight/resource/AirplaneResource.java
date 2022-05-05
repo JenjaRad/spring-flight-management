@@ -1,4 +1,4 @@
-package com.eugene.flight.domain.resource;
+package com.eugene.flight.resource;
 
 import com.eugene.flight.controller.AirplaneController;
 import com.eugene.flight.domain.Airplane;

@@ -2,9 +2,10 @@ package com.eugene.flight.controller;
 
 import com.eugene.flight.domain.request.AirCompanyRequest;
 import com.eugene.flight.domain.request.CompanyAirplaneIdRequest;
-import com.eugene.flight.domain.resource.AirCompanyResource;
+import com.eugene.flight.resource.AirCompanyResource;
 import com.eugene.flight.service.AirCompanyService;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +36,7 @@ public class AirCompanyController {
                 .map(airCompany -> {
                     AirCompanyRequest companyRequest = airCompanyResource.toModel(airCompany);
                     companyRequest.add(linkTo(methodOn(AirplaneController.class).getAllAirplanes()).withRel("airplanes"));
-                    return ResponseEntity.ok(companyRequest);
+                    return new ResponseEntity<>(companyRequest, HttpStatus.CREATED);
                 })
                 .orElse(ResponseEntity.badRequest()
                         .build());

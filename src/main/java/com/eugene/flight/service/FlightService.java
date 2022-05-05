@@ -23,10 +23,12 @@ public class FlightService {
 
     private final FlightRepository flightRepository;
 
-    public List<Flight> getAllFlightsByStatusAndAirCompanyName(FlightStatus status, String name) {
-        if (status != null && StringUtils.hasText(name)) {
-            return flightRepository.findAllByStatusAndAirCompanyName(status, name);
+    public List<Flight> getAllFlightsByStatusAndAirCompanyName(FlightStatus status, String companyName) {
+        if (status != null && StringUtils.hasText(companyName)) {
+            log.info("Successfully update flight status by company name : {} {} ", status, companyName);
+            return flightRepository.findAllByStatusAndAirCompanyName(status, companyName);
         }
+        log.warn("Flight status or company name are not suitable for update");
         return Collections.emptyList();
     }
 
@@ -55,6 +57,7 @@ public class FlightService {
             throw new IllegalArgumentException("You cannot set the same status to flight");
         }
         updateFlightState(updateRequest, foundedFlight);
+        log.info("Successfully update flight state : {} {} ", foundedFlight, foundedFlight.getStatus());
         return flightRepository.saveAndFlush(foundedFlight);
     }
 

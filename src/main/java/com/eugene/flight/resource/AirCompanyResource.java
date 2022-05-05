@@ -1,4 +1,4 @@
-package com.eugene.flight.domain.resource;
+package com.eugene.flight.resource;
 
 import com.eugene.flight.controller.AirCompanyController;
 import com.eugene.flight.domain.AirCompany;
@@ -11,6 +11,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @Component
 public class AirCompanyResource implements RepresentationModelAssembler<AirCompany, AirCompanyRequest> {
+
     @Override
     public AirCompanyRequest toModel(AirCompany from) {
         AirCompanyRequest companyRequest = AirCompanyRequest.builder()

@@ -2,7 +2,7 @@ package com.eugene.flight.controller;
 
 import com.eugene.flight.domain.Flight;
 import com.eugene.flight.domain.request.FlightRequest;
-import com.eugene.flight.domain.resource.FlightResource;
+import com.eugene.flight.resource.FlightResource;
 import com.eugene.flight.service.FlightService;
 import com.eugene.flight.factory.FlightMapper;
 import org.springframework.hateoas.CollectionModel;

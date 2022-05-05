@@ -40,6 +40,7 @@ public class AirCompanyService {
         if (companyId == null || !StringUtils.hasText(name)) {
             throw new AirCompanyNotFoundException("Cannot update company by name");
         }
+        log.info("Successfully updated company with ID : {} ", companyId);
         companyRepository.updateCompanyByName(companyId, name);
     }
 
@@ -48,6 +49,7 @@ public class AirCompanyService {
         if (id == null) {
             throw new AirCompanyNotFoundException("Cannot delete company by this id");
         }
+        log.info("Successfully deleted company with ID : {} ", id);
         companyRepository.deleteById(id);
     }
 

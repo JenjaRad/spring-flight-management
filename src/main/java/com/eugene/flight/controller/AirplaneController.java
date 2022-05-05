@@ -1,7 +1,7 @@
 package com.eugene.flight.controller;
 
 import com.eugene.flight.domain.request.AirplaneRequest;
-import com.eugene.flight.domain.resource.AirplaneResource;
+import com.eugene.flight.resource.AirplaneResource;
 import com.eugene.flight.service.AirplaneService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
