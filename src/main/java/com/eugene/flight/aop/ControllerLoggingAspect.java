@@ -44,7 +44,7 @@ public class ControllerLoggingAspect {
             String methodName = joinPoint.getSignature()
                     .getName();
             Object result = joinPoint.proceed();
-            long elapsedTime = System.currentTimeMillis() - start;
+            long elapsedTime = System.nanoTime() - start;
             log.debug("Method " + className + "." + methodName + " ()" + " execution time : "
                     + elapsedTime + " ms");
 

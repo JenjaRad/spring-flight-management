@@ -10,15 +10,13 @@ public final class FlightMapper {
 
     public static Flight convertToEntity(FlightRequest request) {
         return Flight.builder()
-                .id(request.id())
-                .createdAt(request.createdAt())
-                .endedAt(request.endedAt())
-                .delayAt(request.delayAt())
-                .status(request.status())
-                .airCompany(request.company())
-                .airplane(request.airplane())
-                .distance(request.distance())
-                .departureCountry(request.departureCountry())
+                .id(request.getId())
+                .createdAt(request.getCreatedAt())
+                .endedAt(request.getEndedAt())
+                .delayAt(request.getDelayAt())
+                .status(request.getStatus())
+                .distance(request.getDistance())
+                .departureCountry(request.getDepartureCountry())
                 .build();
     }
 }

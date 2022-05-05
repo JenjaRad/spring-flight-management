@@ -16,9 +16,9 @@ import static com.eugene.flight.controller.AirplaneController.*;
 public class AirplaneController {
     protected static final String BASE_URL = "/api/v1/airplane-management";
 
-    private AirplaneService airplaneService;
+    private final AirplaneService airplaneService;
 
-    private AirplaneResource airplaneResource;
+    private final AirplaneResource airplaneResource;
 
     public AirplaneController(AirplaneService airplaneService, AirplaneResource airplaneResource) {
         this.airplaneService = airplaneService;

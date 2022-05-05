@@ -21,7 +21,7 @@ import java.time.Instant;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @SuperBuilder
-public abstract sealed class DataAudit implements Serializable permits Airplane, Flight {
+public abstract sealed class DataAudit implements Serializable permits AirCompany, Airplane, Flight {
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)

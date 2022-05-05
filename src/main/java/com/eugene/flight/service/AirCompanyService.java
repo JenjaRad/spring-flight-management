@@ -57,7 +57,32 @@ public class AirCompanyService {
                 .orElseThrow(AirCompanyNotFoundException::new);
         List<Airplane> airplanes = currentCompany.getAirplanes();
 
-        Airplane airplaneToSwitch = airplanes.stream()
+        Airplane airplaneToSwitch = findAirplaneById(airplaneId, airplanes);
+
+        currentCompany.removeAirplane(airplaneToSwitch);
+
+        AirCompany destCompany = findOrCreateTargetCompany(toCompanyId, airplaneToSwitch);
+        if (!destCompany.getAirplanes()
+                .contains(airplaneToSwitch)) {
+            destCompany.addAirplane(airplaneToSwitch);
+            log.info("Successfully add an airplane to existed company: {} ", destCompany.getId());
+        }
+        log.info("Successfully add an airplane to newly created company: {} ", destCompany.getId());
+        return destCompany;
+    }
+
+    private AirCompany findOrCreateTargetCompany(Long toCompanyId, Airplane airplaneToSwitch) {
+        return companyRepository.findById(toCompanyId)
+                .orElseGet(() -> {
+                    var targetCompany = new AirCompany();
+                    targetCompany.setId(toCompanyId);
+                    targetCompany.addAirplane(airplaneToSwitch);
+                    return companyRepository.saveAndFlush(targetCompany);
+                });
+    }
+
+    private Airplane findAirplaneById(Long airplaneId, List<Airplane> airplanes) {
+        return airplanes.stream()
                 .filter(currentAirplane -> currentAirplane.getId()
                         .equals(airplaneId))
                 .findFirst()
@@ -67,22 +92,5 @@ public class AirCompanyService {
                                     String.format("Airplane by this ID: %d was not found or this airplane belongs to other company", airplaneId));
                         }
                 );
-
-        currentCompany.removeAirplane(airplaneToSwitch);
-
-        AirCompany destCompany = companyRepository.findById(toCompanyId)
-                .orElseGet(() -> {
-                    var targetCompany = new AirCompany();
-                    targetCompany.setId(toCompanyId);
-                    targetCompany.addAirplane(airplaneToSwitch);
-                    return companyRepository.saveAndFlush(targetCompany);
-                });
-        if (!destCompany.getAirplanes()
-                .contains(airplaneToSwitch)) {
-            destCompany.addAirplane(airplaneToSwitch);
-            log.info("Successfully add an airplane to existed company: {} ", destCompany.getId());
-        }
-        log.info("Successfully add an airplane to newly created company: {} ", destCompany.getId());
-        return destCompany;
     }
 }

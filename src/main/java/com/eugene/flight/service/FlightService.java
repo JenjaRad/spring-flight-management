@@ -51,7 +51,7 @@ public class FlightService {
         Flight foundedFlight = flightRepository.findById(flightId)
                 .orElseThrow(FlightNotFoundException::new);
         if (foundedFlight.getStatus()
-                .equals(updateRequest.status())) {
+                .equals(updateRequest.getStatus())) {
             throw new IllegalArgumentException("You cannot set the same status to flight");
         }
         updateFlightState(updateRequest, foundedFlight);
@@ -59,11 +59,11 @@ public class FlightService {
     }
 
     private void updateFlightState(FlightRequest updateRequest, Flight foundedFlight) {
-        foundedFlight.setStatus(updateRequest.status());
-        switch (updateRequest.status()) {
-            case DELAYED -> foundedFlight.setDelayAt(updateRequest.delayAt());
-            case ACTIVE -> foundedFlight.setCreatedAt(updateRequest.createdAt());
-            case COMPLETED -> foundedFlight.setEndedAt(updateRequest.endedAt());
+        foundedFlight.setStatus(updateRequest.getStatus());
+        switch (updateRequest.getStatus()) {
+            case DELAYED -> foundedFlight.setDelayAt(updateRequest.getDelayAt());
+            case ACTIVE -> foundedFlight.setCreatedAt(updateRequest.getCreatedAt());
+            case COMPLETED -> foundedFlight.setEndedAt(updateRequest.getEndedAt());
             default -> foundedFlight.setStatus(FlightStatus.DEFAULT);
         }
     }

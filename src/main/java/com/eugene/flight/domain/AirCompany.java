@@ -2,15 +2,15 @@ package com.eugene.flight.domain;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "air_company", schema = "flight_schema")
 @Getter
 @Setter
@@ -18,7 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @ToString
 @Builder
-public class AirCompany implements Serializable {
+public non-sealed class AirCompany extends DataAudit implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "air_company_sequence")
     @SequenceGenerator(name = "air_company_sequence", sequenceName = "AIR_COMPANY_SEQUENCE", allocationSize = 1, schema = "flight_schema")
@@ -69,5 +69,18 @@ public class AirCompany implements Serializable {
     public void removeAirplane(Airplane airplane) {
         this.airplanes.remove(airplane);
         airplane.setCompany(null);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AirCompany company = (AirCompany) o;
+        return id.equals(company.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
