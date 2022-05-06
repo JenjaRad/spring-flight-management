@@ -54,7 +54,7 @@ public class FlightService {
                 .orElseThrow(FlightNotFoundException::new);
         if (foundedFlight.getStatus()
                 .equals(updateRequest.getStatus())) {
-            throw new IllegalArgumentException("You cannot set the same status to flight");
+            throw new IllegalStateException("You cannot set the same status to flight");
         }
         updateFlightState(updateRequest, foundedFlight);
         log.info("Successfully update flight state : {} {} ", foundedFlight, foundedFlight.getStatus());

@@ -30,14 +30,14 @@ public class FlightController {
         this.flightResource = flightResource;
     }
 
-    @GetMapping(value = "/flights/status")
+    @GetMapping(value = "/flights/status/company-name")
     public ResponseEntity<CollectionModel<FlightRequest>> getAllFlightsByStatusAndCompanyName(FlightRequest request) {
         List<Flight> allFlights = flightService.getAllFlightsByStatusAndAirCompanyName(request.getStatus(), request.getCompany()
                 .getName());
         return ResponseEntity.ok(flightResource.toCollectionModel(allFlights));
     }
 
-    @GetMapping(value = "/flights/active")
+    @GetMapping(value = "/flights/status/active")
     public ResponseEntity<CollectionModel<FlightRequest>> getAllActiveFlights() {
         List<Flight> allActiveFlights = flightService.findAllActiveFlights();
         CollectionModel<FlightRequest> flightRequests = flightResource.toCollectionModel(allActiveFlights);
@@ -46,7 +46,13 @@ public class FlightController {
         return ResponseEntity.ok(flightRequests);
     }
 
-    @GetMapping(value = "/flights/completed")
+    @GetMapping("/flights/status/completed/date")
+    public ResponseEntity<CollectionModel<FlightRequest>> findAllByDateAndStatus() {
+        List<Flight> allFlightsByDate = flightService.findAllByStatusCompletedAndDate();
+        return ResponseEntity.ok(flightResource.toCollectionModel(allFlightsByDate));
+    }
+
+    @GetMapping(value = "/flights/status/completed")
     public ResponseEntity<CollectionModel<FlightRequest>> getAllCompletedFlightsWithDateDiff() {
         List<Flight> flights = flightService.findAllByStatusCompletedAndDate();
         return ResponseEntity.ok(flightResource.toCollectionModel(flights));
