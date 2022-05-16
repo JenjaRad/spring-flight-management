@@ -17,10 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 @Sql(value = {"/db/data-h2.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class AirCompanyRepositoryTest {
-
     @Autowired
     private AirCompanyRepository companyRepository;
-
     @Test
     @Order(1)
     void testFindByCompanyName() {

@@ -8,6 +8,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public final class TestUtil {
 
+    private static final byte MIN_ORIGIN = 1;
+    private static final byte MAX_BOUND = 11;
+
     private TestUtil() {
     }
 
@@ -27,9 +30,9 @@ public final class TestUtil {
                 .build();
     }
 
-    public static Long generateRandomLong() {
+    public static Long generateRandomNumber() {
         return ThreadLocalRandom.current()
-                .nextLong(1, 11);
+                .nextLong(MIN_ORIGIN, MAX_BOUND);
     }
 
     public static String generateRandomString() {

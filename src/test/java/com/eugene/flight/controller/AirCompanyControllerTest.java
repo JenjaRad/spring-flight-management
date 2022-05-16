@@ -45,7 +45,7 @@ class AirCompanyControllerTest {
     @Test
     @Order(1)
     void whenFindCompanyThenStatusOk() throws Exception {
-        List<AirCompany> company = Collections.singletonList(airCompanyBuilder(generateRandomLong(), generateRandomString()));
+        List<AirCompany> company = Collections.singletonList(airCompanyBuilder(generateRandomNumber(), generateRandomString()));
         when(airCompanyService.findAll())
                 .thenReturn(company);
 
@@ -72,13 +72,13 @@ class AirCompanyControllerTest {
     @Test
     @Order(3)
     void whenGetByIdThenStatusOk() throws Exception {
-        AirCompany company = airCompanyBuilder(generateRandomLong(), generateRandomString());
-        AirCompanyRequest request = airCompanyRequestBuilder(generateRandomLong(), generateRandomString());
+        AirCompany company = airCompanyBuilder(generateRandomNumber(), generateRandomString());
+        AirCompanyRequest request = airCompanyRequestBuilder(generateRandomNumber(), generateRandomString());
 
         when(airCompanyService.findAirCompanyById(anyLong())).thenReturn(company);
         when(airCompanyResource.toModel(company)).thenReturn(request);
 
-        mockMvc.perform(get("/api/v1/air-company-management/{id}", generateRandomLong())
+        mockMvc.perform(get("/api/v1/air-company-management/{id}", generateRandomNumber())
                 .contentType("application/hal+json")
                 .characterEncoding(StandardCharsets.UTF_8.name()))
                 .andDo(print())
@@ -88,10 +88,10 @@ class AirCompanyControllerTest {
     @Test
     @Order(4)
     void whenReassignAirplaneThenStatusCreated() throws Exception {
-        AirCompany airCompany = airCompanyBuilder(generateRandomLong(), generateRandomString());
-        AirCompanyRequest request = airCompanyRequestBuilder(generateRandomLong(), generateRandomString());
+        AirCompany airCompany = airCompanyBuilder(generateRandomNumber(), generateRandomString());
+        AirCompanyRequest request = airCompanyRequestBuilder(generateRandomNumber(), generateRandomString());
 
-        var airplaneIdRequest = new CompanyAirplaneIdRequest(generateRandomLong(), generateRandomLong(), generateRandomLong());
+        var airplaneIdRequest = new CompanyAirplaneIdRequest(generateRandomNumber(), generateRandomNumber(), generateRandomNumber());
         when(airCompanyService.reassignAirplaneToAnotherCompany(anyLong(), anyLong(), anyLong())).thenReturn(airCompany);
         when(airCompanyResource.toModel(airCompany)).thenReturn(request);
 
