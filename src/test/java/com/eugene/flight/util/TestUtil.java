@@ -8,21 +8,27 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public final class TestUtil {
 
-    private static final short MIN_ORIGIN = 1;
-    private static final short MAX_BOUND = 11;
+    private static final int MIN_ORIGIN = Math.abs(1);
+    private static final int MAX_BOUND = 11;
 
     private TestUtil() {
     }
 
     public static AirCompany airCompanyBuilder(Long id, String name) {
-        if (id < MIN_ORIGIN) {
+          /*
+           Constant value might be dynamically changed and not suitable to use it into the 'if' statement
+         */
+        if (id < 1) {
             throw new IllegalArgumentException("You cannot set negative id to the company");
         }
         return AirCompany.builder().id(id).name(name).build();
     }
 
     public static AirCompanyRequest airCompanyRequestBuilder(Long id, String name) {
-        if (id < MIN_ORIGIN) {
+        /*
+           Constant value might be dynamically changed and not suitable to use it into the 'if' statement
+         */
+        if (id < 1) {
             throw new IllegalArgumentException("You cannot set negative id to the companyRequest");
         }
         return AirCompanyRequest.builder().id(id).name(name).build();
