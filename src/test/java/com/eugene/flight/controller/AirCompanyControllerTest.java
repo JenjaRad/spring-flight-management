@@ -5,7 +5,6 @@ import com.eugene.flight.domain.request.AirCompanyRequest;
 import com.eugene.flight.domain.request.CompanyAirplaneIdRequest;
 import com.eugene.flight.resource.AirCompanyResource;
 import com.eugene.flight.service.AirCompanyService;
-import com.eugene.flight.util.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -18,6 +17,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
+import static com.eugene.flight.util.TestUtil.*;
+import static com.eugene.flight.util.TestUtil.airCompanyBuilder;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -44,9 +45,7 @@ class AirCompanyControllerTest {
     @Test
     @Order(1)
     void whenFindCompanyThenStatusOk() throws Exception {
-        List<AirCompany> company = Collections.singletonList(TestUtil.airCompanyBuilder(TestUtil.generateRandomLong(), TestUtil.generateRandomString()));
-        List<AirCompanyRequest> request = Collections.singletonList(TestUtil.airCompanyRequestBuilder(TestUtil.generateRandomLong(), TestUtil.generateRandomString()));
-
+        List<AirCompany> company = Collections.singletonList(airCompanyBuilder(generateRandomLong(), generateRandomString()));
         when(airCompanyService.findAll())
                 .thenReturn(company);
 
@@ -73,13 +72,13 @@ class AirCompanyControllerTest {
     @Test
     @Order(3)
     void whenGetByIdThenStatusOk() throws Exception {
-        AirCompany company = TestUtil.airCompanyBuilder(TestUtil.generateRandomLong(), TestUtil.generateRandomString());
-        AirCompanyRequest request = TestUtil.airCompanyRequestBuilder(TestUtil.generateRandomLong(), TestUtil.generateRandomString());
+        AirCompany company = airCompanyBuilder(generateRandomLong(), generateRandomString());
+        AirCompanyRequest request = airCompanyRequestBuilder(generateRandomLong(), generateRandomString());
 
         when(airCompanyService.findAirCompanyById(anyLong())).thenReturn(company);
         when(airCompanyResource.toModel(company)).thenReturn(request);
 
-        mockMvc.perform(get("/api/v1/air-company-management/{id}", TestUtil.generateRandomLong())
+        mockMvc.perform(get("/api/v1/air-company-management/{id}", generateRandomLong())
                 .contentType("application/hal+json")
                 .characterEncoding(StandardCharsets.UTF_8.name()))
                 .andDo(print())
@@ -89,10 +88,10 @@ class AirCompanyControllerTest {
     @Test
     @Order(4)
     void whenReassignAirplaneThenStatusCreated() throws Exception {
-        AirCompany airCompany = TestUtil.airCompanyBuilder(TestUtil.generateRandomLong(), TestUtil.generateRandomString());
-        AirCompanyRequest request = TestUtil.airCompanyRequestBuilder(TestUtil.generateRandomLong(), TestUtil.generateRandomString());
+        AirCompany airCompany = airCompanyBuilder(generateRandomLong(), generateRandomString());
+        AirCompanyRequest request = airCompanyRequestBuilder(generateRandomLong(), generateRandomString());
 
-        var airplaneIdRequest = new CompanyAirplaneIdRequest(TestUtil.generateRandomLong(), TestUtil.generateRandomLong(), TestUtil.generateRandomLong());
+        var airplaneIdRequest = new CompanyAirplaneIdRequest(generateRandomLong(), generateRandomLong(), generateRandomLong());
         when(airCompanyService.reassignAirplaneToAnotherCompany(anyLong(), anyLong(), anyLong())).thenReturn(airCompany);
         when(airCompanyResource.toModel(airCompany)).thenReturn(request);
 
