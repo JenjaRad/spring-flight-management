@@ -9,14 +9,15 @@ import java.util.concurrent.ThreadLocalRandom;
 public final class TestUtil {
 
     private static final int MIN_ORIGIN = Math.abs(1);
-    private static final int MAX_BOUND = 11;
+
+    private static final int MAX_BOUND = Math.abs(11);
 
     private TestUtil() {
     }
 
     public static AirCompany airCompanyBuilder(Long id, String name) {
           /*
-           Constant value might be dynamically changed and not suitable to use it into the 'if' statement
+           Constant value might be dynamically changed and not suitable to use it in the 'if' statement
          */
         if (id < 1) {
             throw new IllegalArgumentException("You cannot set negative id to the company");
@@ -26,7 +27,7 @@ public final class TestUtil {
 
     public static AirCompanyRequest airCompanyRequestBuilder(Long id, String name) {
         /*
-           Constant value might be dynamically changed and not suitable to use it into the 'if' statement
+           Constant value might be dynamically changed and not suitable to use it in the 'if' statement
          */
         if (id < 1) {
             throw new IllegalArgumentException("You cannot set negative id to the companyRequest");
