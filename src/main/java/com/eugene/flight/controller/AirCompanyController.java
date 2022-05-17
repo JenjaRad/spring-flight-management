@@ -20,16 +20,16 @@ public class AirCompanyController {
 
     protected static final String BASE_URL = "/api/v1/air-company-management";
 
-    private AirCompanyService companyService;
+    private final AirCompanyService companyService;
 
-    private AirCompanyResource airCompanyResource;
+    private final AirCompanyResource airCompanyResource;
 
     public AirCompanyController(AirCompanyService companyService, AirCompanyResource airCompanyResource) {
         this.companyService = companyService;
         this.airCompanyResource = airCompanyResource;
     }
 
-    @PostMapping(value = "/reassign")
+    @PostMapping(value = "/airplane/reassign")
     public ResponseEntity<AirCompanyRequest> assignAirplaneToAnotherCompany(@RequestBody CompanyAirplaneIdRequest companyAirplaneIdRequest) {
         return Optional.ofNullable(companyService.reassignAirplaneToAnotherCompany(
                 companyAirplaneIdRequest.fromCompanyId(), companyAirplaneIdRequest.toCompanyId(), companyAirplaneIdRequest.airplaneId()))
@@ -52,7 +52,6 @@ public class AirCompanyController {
                 })
                 .orElse(ResponseEntity.notFound()
                         .build());
-
     }
 
     @GetMapping("/companies")
