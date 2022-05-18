@@ -8,8 +8,13 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public final class TestUtil {
 
+    /*
+    You cannot set negative number to the MIN_ORIGIN
+     */
     private static final int MIN_ORIGIN = Math.abs(1);
-
+    /*
+    You cannot set negative number to the MAX_BOUND
+     */
     private static final int MAX_BOUND = Math.abs(11);
 
     private TestUtil() {
