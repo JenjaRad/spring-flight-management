@@ -1,7 +1,7 @@
 package com.eugene.flight.controller;
 
 import com.eugene.flight.domain.request.AirCompanyRequest;
-import com.eugene.flight.domain.request.CompanyAirplaneIdRequest;
+import com.eugene.flight.domain.request.CompanyAirplaneRequest;
 import com.eugene.flight.resource.AirCompanyResource;
 import com.eugene.flight.service.AirCompanyService;
 import org.springframework.hateoas.CollectionModel;
@@ -30,9 +30,9 @@ public class AirCompanyController {
     }
 
     @PostMapping(value = "/airplane/reassign")
-    public ResponseEntity<AirCompanyRequest> assignAirplaneToAnotherCompany(@RequestBody CompanyAirplaneIdRequest companyAirplaneIdRequest) {
+    public ResponseEntity<AirCompanyRequest> assignAirplaneToAnotherCompany(@RequestBody CompanyAirplaneRequest companyAirplaneRequest) {
         return Optional.ofNullable(companyService.reassignAirplaneToAnotherCompany(
-                companyAirplaneIdRequest.fromCompanyId(), companyAirplaneIdRequest.toCompanyId(), companyAirplaneIdRequest.airplaneId()))
+                companyAirplaneRequest.fromCompanyId(), companyAirplaneRequest.toCompanyId(), companyAirplaneRequest.airplaneId()))
                 .map(airCompany -> {
                     AirCompanyRequest companyRequest = airCompanyResource.toModel(airCompany);
                     companyRequest.add(linkTo(methodOn(AirplaneController.class).getAllAirplanes()).withRel("airplanes"));

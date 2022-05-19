@@ -28,5 +28,4 @@ public class AirCompanyResource implements RepresentationModelAssembler<AirCompa
         CollectionModel<AirCompanyRequest> companyRequests = RepresentationModelAssembler.super.toCollectionModel(companies);
         return companyRequests.add(linkTo(methodOn(AirCompanyController.class).getAllCompanies()).withSelfRel());
     }
-
 }

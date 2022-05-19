@@ -1,6 +1,7 @@
 package com.eugene.flight.dao;
 
 import com.eugene.flight.domain.AirCompany;
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,6 +21,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AirCompanyRepositoryTest {
     @Autowired
     private AirCompanyRepository companyRepository;
+
+    @BeforeAll
+    static void setUp() {
+
+    }
+
     @Test
     @Order(1)
     void testFindByCompanyName() {
